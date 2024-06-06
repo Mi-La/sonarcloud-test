@@ -85,11 +85,11 @@ void s874()
     // original example
     {
         uint16_t a = 0xff;
-        uint16_t b = 0x0f;
+        int16_t b = 0x0f;
         if (( a & b ) == 0x1234U) // noncompliant until C++20
         {}
 
-        if (~a == 0x1234U) // noncompliant until C++20
+        if (~b == 0x1234U) // noncompliant until C++20
         {}
     }
 }
