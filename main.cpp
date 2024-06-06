@@ -17,7 +17,6 @@ void s845()
         {
             a = c;
         }
-        unused(a, b, c);
     }
 
     // 16-bit
@@ -29,7 +28,6 @@ void s845()
         {
             a = c;
         }
-        unused(a, b, c);
     }
 
     // mix signed 32 and unsigned 16
@@ -38,7 +36,7 @@ void s845()
         uint16_t b = 11;
         int32_t c  = (a > b) ? a : b; // noncompliant - doesn't work probably due to integral promotions?
 
-        unused(a, b, c);
+        unused(c);
     }
 
     // shift unsigned 16 using unsigned 8
@@ -48,7 +46,7 @@ void s845()
         // a << b will become 'int' due to integral promotions, why is it ok to assign int to uint16_t without cast?
         uint16_t c = a << b;
 
-        unused(a, b, c);
+        unused(c);
     }
 
     // multiple binary or-s
@@ -63,7 +61,7 @@ void s845()
         uint16_t d = a | b | c;
         uint16_t e = static_cast<uint16_t>(a | b) | c;
 
-        unused(a, b, c, d);
+        unused(d, e);
     }
 }
 
@@ -81,10 +79,45 @@ void s853()
     }
 }
 
+// Bitwise operators should not be applied to signed operands
+void s874()
+{
+    // original example
+    {
+        uint16_t a = 0xff;
+        uint16_t b = 0x0f;
+        if (( a & b ) == 0x1234U) // noncompliant until C++20
+        {}
+
+        if (~a == 0x1234U) // noncompliant until C++20
+        {}
+    }
+}
+
+auto f(int i)
+{
+    return 1 << i; // noncompliant
+}
+
+// Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
+void misracpp2023_7_0_5_a()
+{
+    const uint16_t value = 0xff;
+    const uint16_t shift = 8;
+    const uint16_t shifted = static_cast<uint16_t>(value << shift);
+    //                                             ^        ^ // integral promotion happens here
+    unused(shifted);
+}
+
 int main(int argc, char* argv[])
 {
     s845();
     s853();
+    s874();
+
+    misracpp2023_7_0_5_a()
 
     return 0;
 }
+
+
