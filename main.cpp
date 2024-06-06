@@ -25,7 +25,7 @@ void s845()
         int16_t a = 10;
         uint16_t b = a; // noncompliant
         int16_t c = (a > 0) ? a : b; // noncompliant
-        if (a > b) // noncompliant - doesn't work probably due to integral promotions?
+        if (a > b) // non-compliant - doesn't work probably due to integral promotions?
         {
             a = c;
         }
@@ -36,7 +36,18 @@ void s845()
     {
         int32_t a = 10;
         uint16_t b = 11;
-        int32_t c  = (a > b) ? a : b; // noncompliant
+        int32_t c  = (a > b) ? a : b; // non-compliant - doesn't work probably due to integral promotions?
+
+        unused(a, b, c);
+    }
+
+    // shift unsigned 16 using unsigned 8
+    {
+        uint16_t a = 0x00FF;
+        uint8_t b = 8;
+        uint16_t c = a << b;
+
+        unused(a, b, c);
     }
 }
 
