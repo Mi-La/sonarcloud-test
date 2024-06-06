@@ -25,11 +25,18 @@ void s845()
         int16_t a = 10;
         uint16_t b = a; // noncompliant
         int16_t c = (a > 0) ? a : b; // noncompliant
-        if (a > b) // noncomplient
+        if (a > b) // noncompliant - doesn't work probably due to integral promotions?
         {
             a = c;
         }
         unused(a, b, c);
+    }
+
+    // mix signed 32 and unsigned 16
+    {
+        int32_t a = 10;
+        uint16_t b = 11;
+        int32_t c  = (a > b) ? a : b; // noncompliant
     }
 }
 
