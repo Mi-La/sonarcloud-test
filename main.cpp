@@ -90,11 +90,13 @@ void s874()
         {}
 
         if (~b == 0x1234U) // noncompliant until C++20
-        {}
+        {
+            s874_f(b);
+        }
     }
 }
 
-auto f(int i)
+auto s874_f(int i)
 {
     return 1 << i; // noncompliant
 }
