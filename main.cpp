@@ -49,6 +49,16 @@ void s845()
 
         unused(a, b, c);
     }
+
+    // multiple binary or-s
+    {
+        uint16_t a = 0x0F;
+        uint16_t b = 0xF0;
+        uint16_t c = 0xFF00;
+        uint16_t d = a | b | c;
+
+        unused(a, b, c, d);
+    }
 }
 
 // Results of ~ and << operations on operands of underlying types unsigned char and unsigned short should immediately be cast to the operand's underlying type
