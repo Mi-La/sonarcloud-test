@@ -61,6 +61,7 @@ void s845()
         // a | b | c will become 'int' due to integral promotions
         // - why is it ok to assign to int to uint16_t without cast?
         uint16_t d = a | b | c;
+        uint16_t e = static_cast<uint16_t>(a | b) | c;
 
         unused(a, b, c, d);
     }
