@@ -79,6 +79,11 @@ void s853()
     }
 }
 
+auto s874_f(int i)
+{
+    return 1 << i; // noncompliant
+}
+
 // Bitwise operators should not be applied to signed operands
 void s874()
 {
@@ -94,11 +99,6 @@ void s874()
             s874_f(b);
         }
     }
-}
-
-auto s874_f(int i)
-{
-    return 1 << i; // noncompliant
 }
 
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
