@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
     s853();
     s874();
 
-    misracpp2023_7_0_5_a()
+    misracpp2023_7_0_5_a();
 
     return 0;
 }
