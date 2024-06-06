@@ -42,4 +42,5 @@ jobs:
             --define sonar.projectKey="Mi-La_sonarcloud-test" \
             --define sonar.organization="mi-la" \
             --define sonar.sourceEncoding="UTF-8" \
+            --define sonar.exclusions="**/CMakeFiles/**/*" \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json"
