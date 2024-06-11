@@ -80,7 +80,8 @@ static void misracpp2023_15_1_3()
         return arg.get();
     };
 
-    (void)func(4);
+    constexpr uint32_t value = 4;
+    (void)func(value);
 }
 
 void misra_rules()
