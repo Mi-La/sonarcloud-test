@@ -2,7 +2,7 @@
 #include "misra_rules.h"
 
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
-void misracpp2023_7_0_5_a()
+static void misracpp2023_7_0_5_a()
 {
     const uint16_t a = 0xff;
     const uint16_t b = 8;
@@ -12,7 +12,7 @@ void misracpp2023_7_0_5_a()
 }
 
 // Do not use a value of type 'int' to initialize a variable of type 'uint16_t'
-void misracpp2023_7_0_6_a()
+static void misracpp2023_7_0_6_a()
 {
     uint16_t a = 0x000f;
     uint16_t b = 0x00f0;

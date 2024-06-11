@@ -2,7 +2,7 @@
 #include "sonar_rules.h"
 
 // Signed and unsigned types should not be mixed in expressions
-void s845()
+static void s845()
 {
     // official example
     {
@@ -62,7 +62,7 @@ void s845()
 }
 
 // Results of ~ and << operations on operands of underlying types unsigned char and unsigned short should immediately be cast to the operand's underlying type
-void s853()
+static void s853()
 {
     // original example
     {
@@ -75,13 +75,13 @@ void s853()
     }
 }
 
-auto s874_f(int i)
+static auto s874_f(int i)
 {
     return 1 << i; // noncompliant
 }
 
 // Bitwise operators should not be applied to signed operands
-void s874()
+static void s874()
 {
     // original example
     {
