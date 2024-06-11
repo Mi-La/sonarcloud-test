@@ -95,9 +95,9 @@ static void misracpp2023_15_1_3()
 
     auto func = [](const NoExplicitCtor& arg)
     {
-        auto otherFunc = [](uint32_t arg)
+        auto otherFunc = [](uint32_t value)
         {
-            return arg;
+            return value;
         };
 
         return otherFunc(arg);
