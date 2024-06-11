@@ -127,6 +127,7 @@ static void misracpp2023_8_5_2()
 {
     const uint32_t value = 0xff00ff00;
     const uint8_t* u8 = reinterpret_cast<const uint8_t*>(&value);
+    //                  ^ reinterpret_cast used here
     (void)u8;
 }
 
