@@ -75,7 +75,7 @@ static void misracpp2023_15_1_3()
     };
 
 
-    auto func = [](const NoExplicitCtor& arg) -> uint32_t
+    auto func = [](const NoExplicitCtor& arg)
     {
         return arg.get();
     };
