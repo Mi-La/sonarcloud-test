@@ -122,6 +122,14 @@ static void misracpp2023_9_3_1()
         continue; // not a compound statement here
 }
 
+// reinterpret_cast shall not be used
+static void misracpp2023_8_5_2()
+{
+    const uint32_t value = 0xff00ff00;
+    const uint8_t* u8 = reinterpret_cast<const uint8_t*>(&value);
+    (void)u8;
+}
+
 void misra_rules()
 {
     misracpp2023_0_1_2();
@@ -130,5 +138,6 @@ void misra_rules()
     misracpp2023_7_0_5();
     misracpp2023_7_0_6();
     misracpp2023_8_2_2();
+    misracpp2023_9_3_1();
     misracpp2023_15_1_3();
 }
