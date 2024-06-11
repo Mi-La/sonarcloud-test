@@ -8,7 +8,7 @@ static void misracpp2023_6_4_1_func(const std::allocator<uint8_t>& allocator)
     {
     public:
         explicit Test(const std::allocator<uint8_t>& allocator) :
-        //                                  ^ hides 'allocator' parameter to the func
+        //                                           ^ hides 'allocator' parameter to the func
                 m_allocator(allocator)
         {
 
