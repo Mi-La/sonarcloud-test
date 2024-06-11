@@ -1,5 +1,28 @@
 #include <stdint.h>
+#include <memory>
 #include "misra_rules.h"
+
+static misracpp2023_6_4_1_a_func(const std::allocator<uint8_t>& allocator)
+{
+    struct Test
+    {
+        Test(const std::allocator<uint8_t>& allocator)
+        //                                  ^ hides 'allocator' parameter to the func
+        {
+            (void)allocator;
+        };
+    };
+
+    Test t = Test(allocator);
+    (void)t;
+}
+
+// A variable declared in an inner scope shall not hide a variable declared in an outer scope
+static misracpp2023_6_4_1_a()
+{
+    std::allocator<uint8_t> allocator;
+    misracpp2023_6_4_1_a_func(allocator);
+}
 
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
 static void misracpp2023_7_0_5_a()
