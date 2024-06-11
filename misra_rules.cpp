@@ -14,8 +14,8 @@ static void misracpp2023_6_4_1_func(const std::allocator<uint8_t>& allocator)
 
         };
 
-        const std::allocator<uint8_t> allocator() const
-        //                            ^ hides 'allocator'parameter to the func
+        const std::allocator<uint8_t>& allocator() const
+        //                             ^ hides 'allocator'parameter to the func
         {
             return m_allocator;
         }
