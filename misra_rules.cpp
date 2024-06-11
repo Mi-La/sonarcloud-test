@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <memory>
+#include <string>
 #include "misra_rules.h"
 
 static void misracpp2023_6_4_1_func(const std::allocator<uint8_t>& allocator)
