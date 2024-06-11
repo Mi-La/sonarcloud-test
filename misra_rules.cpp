@@ -7,7 +7,7 @@
 static void misracpp2023_0_1_2()
 {
     auto func = [](){ return 0; };
-    func();
+    func(); // return value not used here
 }
 
 static void misracpp2023_6_4_1_func(const std::allocator<uint8_t>& allocator)
@@ -71,7 +71,9 @@ static void misracpp2023_8_2_2()
 {
     const uint16_t value = 0xffff;
     const int16_t signed_value = (uint16_t)value;
+    //                            ^ c-style cast used here
     const int16_t other_signed_value = uint16_t(value);
+    //                            ^ functional cast used here
     (void)signed_value;
     (void)other_signed_value;
 }
@@ -82,11 +84,11 @@ static void misracpp2023_15_1_3()
     class NoExplicitCtor
     {
     public:
-        NoExplicitCtor(uint32_t value) :
+        NoExplicitCtor(uint32_t value) : // not explicit constructor here
                 m_value(value)
         {}
 
-        operator uint32_t() const
+        operator uint32_t() const // not explicit conversion operator here
         {
             return m_value;
         }
@@ -107,6 +109,17 @@ static void misracpp2023_15_1_3()
 
     constexpr uint32_t value = 4;
     (void)func(value);
+}
+
+// The body of an iteration-statement or a selection-statement shall be a compound-statement
+static void misracpp2023_9_3_1()
+{
+    const bool cond = true;
+    if (cond)
+        return; // not a compound statement here
+
+    for (uint32_t i = 0; i < 10; ++i)
+        continue; // not a compound statement here
 }
 
 void misra_rules()
