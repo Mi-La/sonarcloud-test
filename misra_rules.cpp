@@ -24,6 +24,7 @@ static void misracpp2023_6_4_1_func(const std::allocator<uint8_t>& allocator)
     };
 
     Test t = Test(allocator);
+    (void)t.allocator();
     (void)t;
 }
 
