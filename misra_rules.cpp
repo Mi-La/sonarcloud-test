@@ -86,11 +86,6 @@ static void misracpp2023_15_1_3()
                 m_value(value)
         {}
 
-        uint32_t get() const
-        {
-            return m_value;
-        }
-
         operator uint32_t() const
         {
             return m_value;
