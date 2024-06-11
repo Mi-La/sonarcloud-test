@@ -69,6 +69,7 @@ static void misracpp2023_8_2_2()
     (void)other_signed_value;
 }
 
+// Conversion operators and constructors that are callable with a single argument shall be explicit
 static void misracpp2023_15_1_3()
 {
     class NoExplicitCtor
@@ -83,14 +84,23 @@ static void misracpp2023_15_1_3()
             return m_value;
         }
 
+        operator uint32_t() const
+        {
+            return m_value;
+        }
+
     private:
         uint32_t m_value;
     };
 
-
     auto func = [](const NoExplicitCtor& arg)
     {
-        return arg.get();
+        auto otherFunc = [](uint32_t arg)
+        {
+            return arg;
+        };
+
+        return otherFunc(arg);
     };
 
     constexpr uint32_t value = 4;
@@ -100,7 +110,7 @@ static void misracpp2023_15_1_3()
 void misra_rules()
 {
     misracpp2023_6_4_1();
-    (void)MISRACPP2024_6_7_3;
+    (void)MISRACPP2024_6_7_2;
     misracpp2023_7_0_5();
     misracpp2023_7_0_6();
     misracpp2023_15_1_3();
