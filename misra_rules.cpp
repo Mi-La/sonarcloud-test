@@ -41,7 +41,7 @@ static void misracpp2023_7_0_5()
     const uint16_t a = 0xff;
     const uint16_t b = 8;
     const uint16_t c = static_cast<uint16_t>(a << b);
-    //                                          ^ integral promotions of a and b happen here, result is int
+    //                                         ^ integral promotions of a and b happen here, result is int
     (void)c;
 }
 
