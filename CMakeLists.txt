@@ -7,3 +7,5 @@ add_executable(${PROJECT_NAME}
     sonar_rules.cpp
     sonar_rules.h
 )
+
+#set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_OPTIONS "-Wsign-conversion")
