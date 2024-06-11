@@ -56,9 +56,37 @@ static void misracpp2023_7_0_6()
     (void)d;
 }
 
+static void misracpp2023_15_1_3()
+{
+    class NoExplicitCtor
+    {
+    public:
+        NoExplicitCtor(uint32_t value) :
+                m_value(value)
+        {}
+
+        uint32_t get() const
+        {
+            return m_value;
+        }
+
+    private:
+        uint32_t m_value;
+    };
+
+
+    auto func = [](const NoExplicitCtor& arg) -> uint32_t
+    {
+        return arg.get();
+    };
+
+    (void)func(4);
+}
+
 void misra_rules()
 {
     misracpp2023_6_4_1();
     misracpp2023_7_0_5();
     misracpp2023_7_0_6();
+    misracpp2023_15_1_3();
 }
