@@ -36,7 +36,7 @@ static void misracpp2023_6_4_1()
     misracpp2023_6_4_1_func(allocator);
 }
 
-static const std::string MISRACPP2024_6_7_3 = "MISRA C++ 2024 6.4.2 - Global variables shall not be used";
+static const std::string MISRACPP2024_6_7_2 = "MISRA C++ 2024 6.7.2 - Global variables shall not be used";
 
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
 static void misracpp2023_7_0_5()
@@ -57,6 +57,16 @@ static void misracpp2023_7_0_6()
     uint16_t d = static_cast<uint16_t>(a | b) | c;
     //                                        ^ integral promotions of (a | b) and c happen here, result is int
     (void)d;
+}
+
+// C-style casts and functional casts shall not be used.
+static void misracpp2023_8_2_2()
+{
+    const uint16_t value = 0xffff;
+    const int16_t signed_value = (uint16_t)value;
+    const int16_t other_signed_value = uint16_t(value);
+    (void)signed_value;
+    (void)other_signed_value;
 }
 
 static void misracpp2023_15_1_3()
