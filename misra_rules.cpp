@@ -3,6 +3,13 @@
 #include <string>
 #include "misra_rules.h"
 
+// The value returned by a function shall be used
+static void misracpp2023_0_1_2()
+{
+    auto func = [](){ return 0; };
+    func();
+}
+
 static void misracpp2023_6_4_1_func(const std::allocator<uint8_t>& allocator)
 {
     class Test
@@ -36,7 +43,7 @@ static void misracpp2023_6_4_1()
     misracpp2023_6_4_1_func(allocator);
 }
 
-static const std::string MISRACPP2024_6_7_2 = "MISRA C++ 2024 6.7.2 - Global variables shall not be used";
+static const std::string MISRACPP2023_6_7_2 = "MISRA C++ 2024 6.7.2 - Global variables shall not be used";
 
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
 static void misracpp2023_7_0_5()
@@ -48,7 +55,7 @@ static void misracpp2023_7_0_5()
     (void)c;
 }
 
-// Do not use a value of type 'int' to initialize a variable of type 'uint16_t'
+// Assignment between numeric types shall be appropriate
 static void misracpp2023_7_0_6()
 {
     uint16_t a = 0x000f;
@@ -109,8 +116,9 @@ static void misracpp2023_15_1_3()
 
 void misra_rules()
 {
+    misracpp2023_0_1_2();
     misracpp2023_6_4_1();
-    (void)MISRACPP2024_6_7_2;
+    (void)MISRACPP2023_6_7_2;
     misracpp2023_7_0_5();
     misracpp2023_7_0_6();
     misracpp2023_8_2_2();
