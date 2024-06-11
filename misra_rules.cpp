@@ -35,7 +35,7 @@ static void misracpp2023_6_4_1()
     misracpp2023_6_4_1_func(allocator);
 }
 
-static const char* MISRACPP2024_6_7_3 = "MISRA C++ 2024 6.4.2 - Global variables shall not be used";
+static const std::string MISRACPP2024_6_7_3 = "MISRA C++ 2024 6.4.2 - Global variables shall not be used";
 
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
 static void misracpp2023_7_0_5()
