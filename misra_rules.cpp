@@ -113,5 +113,6 @@ void misra_rules()
     (void)MISRACPP2024_6_7_2;
     misracpp2023_7_0_5();
     misracpp2023_7_0_6();
+    misracpp2023_8_2_2();
     misracpp2023_15_1_3();
 }
