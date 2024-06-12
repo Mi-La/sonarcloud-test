@@ -12,6 +12,7 @@ static void s845()
         if (a > b) // noncompliant
         {
             a = c;
+            (void)a;
         }
     }
 
@@ -23,6 +24,7 @@ static void s845()
         if (a > b) // noncompliant - doesn't work probably due to integral promotions?
         {
             a = c;
+            (void)a;
         }
     }
 
