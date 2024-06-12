@@ -81,7 +81,7 @@ static void s853()
     }
 }
 
-static auto s874_f(int i)
+static auto s874_f(int32_t i)
 {
     return 1 << i; // noncompliant
 }
