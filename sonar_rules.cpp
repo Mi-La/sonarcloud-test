@@ -100,8 +100,9 @@ static void s874()
 
         if (~b == 0x1234U) // noncompliant until C++20
         {
-            (void)s874_f(b);
+            // empty
         }
+        (void)s874_f(b);
     }
 }
 
