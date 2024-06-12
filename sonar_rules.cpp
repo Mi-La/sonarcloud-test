@@ -92,7 +92,9 @@ static void s874()
         const uint16_t a = 0xff;
         const int16_t b = 0x0f;
         if (( a & b ) == 0x1234U) // noncompliant until C++20
-        {}
+        {
+            // empty
+        }
 
         if (~b == 0x1234U) // noncompliant until C++20
         {
