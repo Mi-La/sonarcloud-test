@@ -43,7 +43,21 @@ static void misracpp2023_6_4_1()
     misracpp2023_6_4_1_func(allocator);
 }
 
-static const std::string MISRACPP2023_6_7_2 = "MISRA C++ 2024 6.7.2 - Global variables shall not be used";
+static const std::string MISRACPP2023_6_7_2_a = "MISRA C++ 2024 6.7.2 - Global variables shall not be used";
+
+static const std::array<uint32_t, 4> MISRACPP2023_6_7_2_b = {
+    1U,
+    2U,
+    3U,
+    4U
+};
+
+static constexpr std::array<uint64_t, 4> MISRACPP2023_6_7_2_c = {
+    1U,
+    2U,
+    3U,
+    4U
+};
 
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness of an operand from 'uint16_t' to 'int'
 static void misracpp2023_7_0_5()
@@ -135,7 +149,9 @@ void misra_rules()
 {
     misracpp2023_0_1_2();
     misracpp2023_6_4_1();
-    (void)MISRACPP2023_6_7_2;
+    (void)MISRACPP2023_6_7_2_a;
+    (void)MISRACPP2023_6_7_2_b;
+    (void)MISRACPP2023_6_7_2_c;
     misracpp2023_7_0_5();
     misracpp2023_7_0_6();
     misracpp2023_8_2_2();
