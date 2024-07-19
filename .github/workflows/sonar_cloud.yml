@@ -45,7 +45,7 @@ jobs:
           fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/build_wrapper.zip`, Buffer.from(download.data));
 
     - name: 'Unzip build wrapper output directory'
-      run: unzip build_wrapper.zip -d ${{ env.BUILD_WRAPPER_OUTPUT_DIR }}
+      run: unzip build_wrapper.zip -d ${{ env.BUILD_WRAPPER_OUT_DIR }}
 
     - name: Run sonar-scanner
       env:
