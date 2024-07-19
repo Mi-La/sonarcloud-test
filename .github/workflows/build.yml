@@ -1,0 +1,40 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master", '*-ci' ]
+  pull_request:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    env:
+      BUILD_WRAPPER_OUT_DIR: build_wrapper
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0 # shallow clones should be disabled for a better relevancy of analysis
+        submodules: recursive
+
+    - name: Install sonar-scanner and build-wrapper
+      uses: SonarSource/sonarcloud-github-c-cpp@v2
+
+    - name: Install dependencies
+      run: sudo apt-get install cmake
+
+    - name: Build sonarcloud-test application under SC build wrapper
+      run: |
+        mkdir build
+        cmake -S . -B build
+        build-wrapper-linux-x86-64 --out-dir ${{env.BUILD_WRAPPER_OUT_DIR}} cmake --build build/
+
+    - name: Upload build wrapper output directory
+      uses: actions/upload-artifact@v3
+      with:
+        name: build_wrapper
+        path: ${{env.BUILD_WRAPPER_OUT_DIR}}

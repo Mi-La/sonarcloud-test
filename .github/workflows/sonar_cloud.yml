@@ -3,8 +3,6 @@ name: SonarCloud C/C++ CI
 on:
   push:
     branches: [ "master", '*-ci' ]
-  pull_request:
-    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
@@ -24,14 +22,10 @@ jobs:
     - name: Install sonar-scanner and build-wrapper
       uses: SonarSource/sonarcloud-github-c-cpp@v2
 
-    - name: Install dependencies
-      run: sudo apt-get install cmake
-
-    - name: Build sonarcloud-test application under SC build wrapper
-      run: |
-        mkdir build
-        cmake -S . -B build
-        build-wrapper-linux-x86-64 --out-dir ${{env.BUILD_WRAPPER_OUT_DIR}} cmake --build build/
+    - name: Download build wrapper output directory
+      uses: actions/download-artifact@v3
+      with:
+        name: build_wrapper
 
     - name: Run sonar-scanner
       env:
