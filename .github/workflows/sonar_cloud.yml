@@ -63,6 +63,6 @@ jobs:
             --define sonar.exclusions="**/CMakeFiles/**/*" \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" \
             --define sonar.scm.revision=${{ github.event.workflow_run.head_sha }} \
-            --define sonar.pullrequest.key=${{ github.event.workflow_run.pull_requests[0].number }} \\
-            --define sonar.pullrequest.branch=${{ github.event.workflow_run.pull_requests[0].head.ref }} \\
+            --define sonar.pullrequest.key=${{ github.event.workflow_run.pull_requests[0].number }} \
+            --define sonar.pullrequest.branch=${{ github.event.workflow_run.pull_requests[0].head.ref }} \
             --define sonar.pullrequest.base=${{ github.event.workflow_run.pull_requests[0].base.ref }}
