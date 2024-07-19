@@ -36,5 +36,7 @@ jobs:
     - name: Upload build wrapper output directory
       uses: actions/upload-artifact@v3
       with:
-        name: build_wrapper
-        path: ${{env.BUILD_WRAPPER_OUT_DIR}}
+        name: build
+        path: |
+          build
+          ${{env.BUILD_WRAPPER_OUT_DIR}}
