@@ -14,15 +14,6 @@ jobs:
       BUILD_WRAPPER_OUT_DIR: build_wrapper
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0 # shallow clones should be disabled for a better relevancy of analysis
-        submodules: recursive
-
-    - name: Install sonar-scanner and build-wrapper
-      uses: SonarSource/sonarcloud-github-c-cpp@v2
-
     - name: Request GitHub API for PR data
       uses: octokit/request-action@v2.x
       id: get_pr_data
@@ -32,13 +23,32 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: "Echo"
+    - name: "checkout"
       run: |
         echo "${{ github.event.workflow_run.head_repository.full_name }}"
         echo "${{ github.event.workflow_run.head_branch }}"
-        echo "${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
-        echo "upstream/${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
-        echo "${{ github.event.workflow_run.head_branch }}"
+
+    - uses: actions/checkout@v4
+      with:
+        repository: ${{ github.event.workflow_run.head_repository.full_name }}
+        ref: ${{ github.event.workflow_run.head_branch }}
+        fetch-depth: 0 # shallow clones should be disabled for a better relevancy of analysis
+        submodules: recursive
+
+    - name: Checkout base branch
+      run: |
+        git remote add upstream ${{ github.event.repository.clone_url }}
+        git fetch upstream
+        git checkout -B ${{ fromJson(steps.get_pr_data.outputs.data).base.ref }} upstream/${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}
+        git checkout ${{ github.event.workflow_run.head_branch }}
+        git clean -ffdx && git reset --hard HEAD
+
+    - name: "list branches"
+      run: |
+        git branch -a
+
+    - name: Install sonar-scanner and build-wrapper
+      uses: SonarSource/sonarcloud-github-c-cpp@v2
 
     - name: Download build & build wrapper output directory
       uses: actions/github-script@v6
