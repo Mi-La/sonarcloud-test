@@ -23,6 +23,15 @@ jobs:
     - name: Install sonar-scanner and build-wrapper
       uses: SonarSource/sonarcloud-github-c-cpp@v2
 
+    - name: Request GitHub API for PR data
+      uses: octokit/request-action@v2.x
+      id: get_pr_data
+      with:
+        route: GET /repos/{full_name}/pulls/1
+        full_name: ${{ github.event.repository.full_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: "Echo"
       run: |
         echo "${{ github.event.workflow_run.head_repository.full_name }}"
