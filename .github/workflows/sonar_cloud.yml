@@ -50,9 +50,6 @@ jobs:
     - name: Install sonar-scanner and build-wrapper
       uses: SonarSource/sonarcloud-github-c-cpp@v2
 
-    - name: Unzip build wrapper output directory
-      run: unzip build.zip
-
     - name: "PR info"
       run: |
         echo "-Dsonar.pullrequest.key=${{ fromJson(steps.get_pr_data.outputs.data).number }}"
@@ -61,6 +58,12 @@ jobs:
         echo "${{ github.event.workflow_run.pull_requests[0].head.ref }}"
         echo "-Dsonar.pullrequest.base=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
         echo "${{ github.event.workflow_run.pull_requests[0].base.ref }}"
+
+    - name: Build sonarcloud-test application under SC build wrapper
+      run: |
+        mkdir build
+        cmake -S . -B build
+        build-wrapper-linux-x86-64 --out-dir ${{env.BUILD_WRAPPER_OUT_DIR}} cmake --build build/
 
     - name: Run sonar-scanner
       env:
