@@ -23,6 +23,14 @@ jobs:
     - name: Install sonar-scanner and build-wrapper
       uses: SonarSource/sonarcloud-github-c-cpp@v2
 
+    - name: "Echo"
+      run: |
+        echo "${{ github.event.workflow_run.head_repository.full_name }}"
+        echo "${{ github.event.workflow_run.head_branch }}"
+        echo "${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
+        echo "upstream/${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
+        echo "${{ github.event.workflow_run.head_branch }}"
+
     - name: Download build & build wrapper output directory
       uses: actions/github-script@v6
       with:
