@@ -18,7 +18,7 @@ jobs:
       uses: octokit/request-action@v2.x
       id: get_pr_data
       with:
-        route: GET /repos/{full_name}/pulls/1
+        route: GET /repos/{full_name}/pulls/2
         full_name: ${{ github.event.repository.full_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
