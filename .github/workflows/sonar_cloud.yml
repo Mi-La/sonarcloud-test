@@ -53,11 +53,11 @@ jobs:
     - name: "PR info"
       run: |
         echo "-Dsonar.pullrequest.key=${{ fromJson(steps.get_pr_data.outputs.data).number }}"
-        echo "${{ github.event.workflow_run.pull_requests[0].number }}"
+        echo "num: ${{ github.event.workflow_run.pull_requests[0].number }}"
         echo "-Dsonar.pullrequest.branch=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }}"
-        echo "${{ github.event.workflow_run.pull_requests[0].head.ref }}"
+        echo "head: ${{ github.event.workflow_run.pull_requests[0].head.ref }}"
         echo "-Dsonar.pullrequest.base=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
-        echo "${{ github.event.workflow_run.pull_requests[0].base.ref }}"
+        echo "base: ${{ github.event.workflow_run.pull_requests[0].base.ref }}"
 
     - name: Build sonarcloud-test application under SC build wrapper
       run: |
@@ -77,6 +77,6 @@ jobs:
             --define sonar.exclusions="**/CMakeFiles/**/*" \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" \
             --define sonar.scm.revision=${{ github.event.workflow_run.head_sha }} \
-            --define sonar.pullrequest.key=${{ github.event.workflow_run.pull_requests[0].number }} \
-            --define sonar.pullrequest.branch=${{ github.event.workflow_run.pull_requests[0].head.ref }} \
-            --define sonar.pullrequest.base=${{ github.event.workflow_run.pull_requests[0].base.ref }}
+            --define sonar.pullrequest.key=${{ fromJson(steps.get_pr_data.outputs.data).number }} \
+            --define sonar.pullrequest.branch=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }} \
+            --define sonar.pullrequest.base=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}
