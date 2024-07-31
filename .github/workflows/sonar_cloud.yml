@@ -15,7 +15,7 @@ jobs:
 
     steps:
     - name: Download PR number artifact
-      if: github.event_name == 'pull_request'
+      if: github.event.workflow_run.event == 'pull_request'
       uses: dawidd6/action-download-artifact@v6
       with:
         workflow: Build
@@ -23,14 +23,14 @@ jobs:
         name: PR_NUMBER
 
     - name: Read PR_NUMBER.txt
-      if: github.event_name == 'pull_request'
+      if: github.event.workflow_run.event == 'pull_request'
       id: pr_number
       uses: juliangruber/read-file-action@v1
       with:
         path: ./PR_NUMBER.txt
 
     - name: Request GitHub API for PR data
-      if: github.event_name == 'pull_request'
+      if: github.event.workflow_run.event == 'pull_request'
       uses: octokit/request-action@v2.x
       id: get_pr_data
       with:
@@ -48,7 +48,7 @@ jobs:
         submodules: recursive
 
     - name: Checkout base branch
-      if: github.event_name == 'pull_request'
+      if: github.event.workflow_run.event == 'pull_request'
       run: |
         git remote add upstream ${{ github.event.repository.clone_url }}
         git fetch upstream
@@ -88,7 +88,7 @@ jobs:
       run: unzip build.zip
 
     - name: PR info
-      if: github.event_name == 'pull_request'
+      if: github.event.workflow_run.event == 'pull_request'
       run: |
         echo "PR_KEY=${{ fromJson(steps.get_pr_data.outputs.data).number }}" >> ${GITHUB_ENV}
         echo "PR_BRANCH=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }}"  >> ${GITHUB_ENV}
