@@ -16,6 +16,18 @@ static void s845()
         }
     }
 
+    // official example - copy in PR
+    {
+        int32_t a = 10;
+        const uint32_t b = a; // noncompliant
+        const int32_t c = (a > 0) ? a : b; // noncompliant
+        if (a > b) // noncompliant
+        {
+            a = c;
+            (void)a;
+        }
+    }
+
     // 16-bit
     {
         int16_t a = 10;
@@ -103,6 +115,19 @@ static void s874()
             // empty
         }
         (void)s874_f(b);
+    }
+
+    // original example - copy in PR
+    {
+        const uint8_t port = 0x5aU;
+        uint8_t result_8;
+        uint16_t result_16;
+        const uint16_t mode = 0x0f;
+        result_8 = (~port) >> 4; // noncompliant
+        result_16 = ((port << 4) & mode) >> 6; // noncompliant
+
+        (void)result_8;
+        (void)result_16;
     }
 }
 
