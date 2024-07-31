@@ -87,6 +87,13 @@ jobs:
     - name: Unzip build wrapper output directory
       run: unzip build.zip
 
+    - name: PR info
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "PR_KEY=${{ fromJson(steps.get_pr_data.outputs.data).number }}" >> ${GITHUB_ENV}
+        echo "PR_BRANCH=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }}"  >> ${GITHUB_ENV}
+        echo "PR_BASE=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"  >> ${GITHUB_ENV}
+
     - name: Run sonar-scanner
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -99,6 +106,6 @@ jobs:
             --define sonar.exclusions="**/CMakeFiles/**/*" \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" \
             --define sonar.scm.revision=${{ github.event.workflow_run.head_sha }} \
-            --define sonar.pullrequest.key=${{ fromJson(steps.get_pr_data.outputs.data).number }} \
-            --define sonar.pullrequest.branch=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }} \
-            --define sonar.pullrequest.base=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}
+            --define sonar.pullrequest.key=${{ env.PR_KEY }} \
+            --define sonar.pullrequest.branch=${{ env.PR_BRANCH }} \
+            --define sonar.pullrequest.base=${{ env.PR_BASE }}
