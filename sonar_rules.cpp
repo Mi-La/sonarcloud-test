@@ -16,6 +16,18 @@ static void s845()
         }
     }
 
+    // official example - copy in PR
+    {
+        int32_t a = 10;
+        const uint32_t b = a; // noncompliant
+        const int32_t c = (a > 0) ? a : b; // noncompliant
+        if (a > b) // noncompliant
+        {
+            a = c;
+            (void)a;
+        }
+    }
+
     // 16-bit
     {
         int16_t a = 10;
