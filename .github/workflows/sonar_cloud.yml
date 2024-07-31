@@ -15,6 +15,7 @@ jobs:
 
     steps:
     - name: Download PR number artifact
+      if: github.event_name == 'pull_request'
       uses: dawidd6/action-download-artifact@v6
       with:
         workflow: Build
@@ -22,12 +23,14 @@ jobs:
         name: PR_NUMBER
 
     - name: Read PR_NUMBER.txt
+      if: github.event_name == 'pull_request'
       id: pr_number
       uses: juliangruber/read-file-action@v1
       with:
         path: ./PR_NUMBER.txt
 
     - name: Request GitHub API for PR data
+      if: github.event_name == 'pull_request'
       uses: octokit/request-action@v2.x
       id: get_pr_data
       with:
@@ -37,11 +40,6 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: "checkout"
-      run: |
-        echo "${{ github.event.workflow_run.head_repository.full_name }}"
-        echo "${{ github.event.workflow_run.head_branch }}"
-
     - uses: actions/checkout@v4
       with:
         repository: ${{ github.event.workflow_run.head_repository.full_name }}
@@ -50,6 +48,7 @@ jobs:
         submodules: recursive
 
     - name: Checkout base branch
+      if: github.event_name == 'pull_request'
       run: |
         git remote add upstream ${{ github.event.repository.clone_url }}
         git fetch upstream
@@ -63,16 +62,6 @@ jobs:
 
     - name: Install sonar-scanner and build-wrapper
       uses: SonarSource/sonarcloud-github-c-cpp@v2
-
-    - name: "PR info"
-      run: |
-        echo "${{ toJson(github.event.workflow_run) }}"
-        echo "-Dsonar.pullrequest.key=${{ fromJson(steps.get_pr_data.outputs.data).number }}"
-        echo "num: ${{ github.event.workflow_run.pull_requests[0].number }}"
-        echo "-Dsonar.pullrequest.branch=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }}"
-        echo "head: ${{ github.event.workflow_run.pull_requests[0].head.ref }}"
-        echo "-Dsonar.pullrequest.base=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
-        echo "base: ${{ github.event.workflow_run.pull_requests[0].base.ref }}"
 
     - name: Download build & build wrapper output directory
       uses: actions/github-script@v6
