@@ -33,6 +33,10 @@ jobs:
         cmake -S . -B build
         build-wrapper-linux-x86-64 --out-dir ${{env.BUILD_WRAPPER_OUT_DIR}} cmake --build build/
 
+    - name: Save PR number to file
+      if: github.event_name == 'pull_request'
+      run: echo ${{ github.event.number }} > build/PR_NUMBER.txt
+
     - name: Upload build wrapper output directory
       uses: actions/upload-artifact@v3
       with:

@@ -14,19 +14,31 @@ jobs:
       BUILD_WRAPPER_OUT_DIR: build_wrapper
 
     steps:
+    - name: Download PR number artifact
+      if: github.event_name == 'pull_request'
+      uses: dawidd6/action-download-artifact@v6
+      with:
+        workflow: Build
+        run_id: ${{ github.event.workflow_run.id }}
+        name: PR_NUMBER
+
+    - name: Read PR_NUMBER.txt
+      if: github.event_name == 'pull_request'
+      id: pr_number
+      uses: juliangruber/read-file-action@v1
+      with:
+        path: ./PR_NUMBER.txt
+
     - name: Request GitHub API for PR data
+      if: github.event_name == 'pull_request'
       uses: octokit/request-action@v2.x
       id: get_pr_data
       with:
-        route: GET /repos/{full_name}/pulls/2
+        route: GET /repos/{full_name}/pulls/{number}
+        number: ${{ steps.pr_number.outputs.content }}
         full_name: ${{ github.event.repository.full_name }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: "checkout"
-      run: |
-        echo "${{ github.event.workflow_run.head_repository.full_name }}"
-        echo "${{ github.event.workflow_run.head_branch }}"
 
     - uses: actions/checkout@v4
       with:
@@ -36,11 +48,12 @@ jobs:
         submodules: recursive
 
     - name: Checkout base branch
+      if: github.event_name == 'pull_request'
       run: |
         git remote add upstream ${{ github.event.repository.clone_url }}
         git fetch upstream
         git checkout -B ${{ fromJson(steps.get_pr_data.outputs.data).base.ref }} upstream/${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}
-        git checkout ${{ github.event.workflow_run.head_branch }}
+        git checkout origin/${{ github.event.workflow_run.head_branch }}
         git clean -ffdx && git reset --hard HEAD
 
     - name: "list branches"
@@ -49,16 +62,6 @@ jobs:
 
     - name: Install sonar-scanner and build-wrapper
       uses: SonarSource/sonarcloud-github-c-cpp@v2
-
-    - name: "PR info"
-      run: |
-        echo "${{ toJson(github.event.workflow_run) }}"
-        echo "-Dsonar.pullrequest.key=${{ fromJson(steps.get_pr_data.outputs.data).number }}"
-        echo "num: ${{ github.event.workflow_run.pull_requests[0].number }}"
-        echo "-Dsonar.pullrequest.branch=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }}"
-        echo "head: ${{ github.event.workflow_run.pull_requests[0].head.ref }}"
-        echo "-Dsonar.pullrequest.base=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"
-        echo "base: ${{ github.event.workflow_run.pull_requests[0].base.ref }}"
 
     - name: Download build & build wrapper output directory
       uses: actions/github-script@v6
@@ -84,6 +87,13 @@ jobs:
     - name: Unzip build wrapper output directory
       run: unzip build.zip
 
+    - name: PR info
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "PR_KEY=${{ fromJson(steps.get_pr_data.outputs.data).number }}" >> ${GITHUB_ENV}
+        echo "PR_BRANCH=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }}"  >> ${GITHUB_ENV}
+        echo "PR_BASE=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}"  >> ${GITHUB_ENV}
+
     - name: Run sonar-scanner
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -96,6 +106,6 @@ jobs:
             --define sonar.exclusions="**/CMakeFiles/**/*" \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" \
             --define sonar.scm.revision=${{ github.event.workflow_run.head_sha }} \
-            --define sonar.pullrequest.key=${{ fromJson(steps.get_pr_data.outputs.data).number }} \
-            --define sonar.pullrequest.branch=${{ fromJson(steps.get_pr_data.outputs.data).head.ref }} \
-            --define sonar.pullrequest.base=${{ fromJson(steps.get_pr_data.outputs.data).base.ref }}
+            --define sonar.pullrequest.key=${{ env.PR_KEY }} \
+            --define sonar.pullrequest.branch=${{ env.PR_BRANCH }} \
+            --define sonar.pullrequest.base=${{ env.PR_BASE }}
