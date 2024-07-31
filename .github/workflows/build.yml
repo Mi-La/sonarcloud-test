@@ -35,7 +35,14 @@ jobs:
 
     - name: Save PR number to file
       if: github.event_name == 'pull_request'
-      run: echo ${{ github.event.number }} > build/PR_NUMBER.txt
+      run: echo ${{ github.event.number }} > PR_NUMBER.txt
+
+    - name: Archive PR number
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v4
+      with:
+        name: PR_NUMBER
+        path: PR_NUMBER.txt
 
     - name: Upload build wrapper output directory
       uses: actions/upload-artifact@v3
