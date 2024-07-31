@@ -116,6 +116,19 @@ static void s874()
         }
         (void)s874_f(b);
     }
+
+    // original example - copy in PR
+    {
+        const uint8_t port = 0x5aU;
+        uint8_t result_8;
+        uint16_t result_16;
+        const uint16_t mode = 0x0f;
+        result_8 = (~port) >> 4; // noncompliant
+        result_16 = ((port << 4) & mode) >> 6; // noncompliant
+
+        (void)result_8;
+        (void)result_16;
+    }
 }
 
 void sonar_rules()
