@@ -14,6 +14,10 @@ jobs:
       BUILD_WRAPPER_OUT_DIR: build_wrapper
 
     steps:
+    - name: "Echo"
+      run: |
+        echo "${{ toJson(github.event.workflow_run) }}"
+
     - name: Download PR number artifact
       if: github.event.workflow_run.event == 'pull_request'
       uses: dawidd6/action-download-artifact@v6
