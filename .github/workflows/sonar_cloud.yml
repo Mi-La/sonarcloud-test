@@ -1,5 +1,3 @@
-name: SonarCloud C/C++ CI
-run-name: "Sonar Cloud C/C++ CI (Trigger #${{ github.event.workflow_run.run_number }})"
 
 on:
   workflow_run:
