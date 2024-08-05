@@ -108,8 +108,8 @@ jobs:
             --define sonar.sourceEncoding="UTF-8" \
             --define sonar.exclusions="**/CMakeFiles/**/*" \
             --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" \
-            --define sonar.scm.revision=${{ github.event.workflow_run.head_sha }} \
-            --define sonar.pullrequest.key=${{ env.PR_KEY }} \
-            --define sonar.pullrequest.branch=${{ env.PR_BRANCH }} \
+            --define sonar.scm.revision="${{ github.event.workflow_run.head_sha }}" \
+            --define sonar.pullrequest.key="${{ env.PR_KEY }}" \
+            --define sonar.pullrequest.branch="${{ env.PR_BRANCH }}" \
             --define sonar.pullrequest.base=${{ env.PR_BASE }} \
             --define sonar.branch.name=${{ github.event.workflow_run.head_branch }}
