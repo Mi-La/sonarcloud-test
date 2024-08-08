@@ -14,6 +14,18 @@ static void rule_0_1_2()
     Rule::func(); // return value not used here
 }
 
+constexpr long double operator"" _km_5_10_1(long double len) noexcept
+{
+    return len;
+}
+
+// User-defined identifiers shall have an appropriate form
+static void rule_5_10_1()
+{
+    const long double len = 10.0_km_5_10_1;
+    (void)len;
+}
+
 // A variable declared in an inner scope shall not hide a variable declared in an outer scope
 static void rule_6_4_1()
 {
@@ -171,6 +183,8 @@ void misra_rules()
     // - Sonar Rule ID: cpp:M23_007
     // - Issue: https://github.com/ndsev/zserio/issues/607
     rule_0_1_2();
+
+    rule_5_10_1();
 
     // Rule 6.4.1 A variable declared in an inner scope shall not hide a variable declared in an outer scope
     // - Open Issue: https://github.com/ndsev/zserio/issues/609
