@@ -69,6 +69,20 @@ static void rule_6_7_2()
     (void)RULE_6_7_2;
 }
 
+// The numerical value of a character shall not be used
+static void rule_7_0_3()
+{
+    char a = 10; // non-compliant implicit conversion from int to char
+    int8_t b = 'a'; // non-compliant
+    uint8_t c = '\r'; // non-compliant
+    signed char d = 11; // ok, type has integral category
+
+    (void)a;
+    (void)b;
+    (void)c;
+    (void)d;
+}
+
 // Integral promotion or the usual arithmetic conversions shall not change the type signedness
 static void rule_7_0_5()
 {
@@ -195,6 +209,11 @@ void misra_rules()
     // - Sonar Rule ID: cpp:M23_388
     // - Issue: https://github.com/ndsev/zserio/issues/611
     rule_6_7_2();
+
+    // Rule 7.0.3 The numerical value of a character shall not be used
+    // - Sonar Rule ID:
+    // - Issue: https://github.com/ndsev/zserio/issues/628
+    rule_7_0_3();
 
     // Rule 7.0.5 Integral promotion or the usual arithmetic conversions shall not change the type signedness
     // - not covered by any sonar rule
